@@ -13,11 +13,18 @@ export default function Home() {
     const imageData = takePicture();
     if (imageData) {
       setCapturedImage(imageData);
+      stopCamera(); // Stop camera after taking photo
       resetVerification();
     }
   };
 
-  const handleVerifyAge = async () => {
+  const handleRetakePhoto = () => {
+    setCapturedImage(null);
+    resetVerification();
+    startCamera(); // Restart camera
+  };
+
+  const handleUpload = async () => {
     if (capturedImage) {
       await verifyAge(capturedImage);
     }
@@ -27,23 +34,26 @@ export default function Home() {
     <div className="min-h-screen bg-gray-100">
       <div className="flex flex-col items-center w-full px-4 py-6 sm:py-16 md:py-24">
 
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          style={{ transform: 'scaleX(-1)' }}
-          className={`w-full max-w-2xl border border-black aspect-video object-cover ${isCameraOn ? '' : 'hidden'}`}
-        />
+        {/* Show video when camera is on and no image is captured */}
+        {!capturedImage && (
+          <video
+            ref={videoRef}
+            autoPlay
+            playsInline
+            style={{ transform: 'scaleX(-1)' }}
+            className={`w-full max-w-2xl border border-black aspect-video object-cover ${isCameraOn ? '' : 'hidden'}`}
+          />
+        )}
 
         <canvas ref={canvasRef} className="hidden" />
 
+        {/* Show captured image when available */}
         {capturedImage && (
-          <div className="w-full max-w-2xl mt-4">
-            {/* Show preview only on mobile */}
+          <div className="w-full max-w-2xl">
             <img
               src={capturedImage}
               alt="Captured"
-              className="w-full border-2 border-black sm:hidden"
+              className="w-full border-2 border-black aspect-video object-cover"
             />
 
             {verificationResult && (
@@ -77,39 +87,44 @@ export default function Home() {
           </div>
         )}
 
+        {/* Two-button interface */}
         <div className="flex flex-col sm:flex-row gap-3 w-full max-w-2xl mt-6">
-          {isCameraOn ? (
+          {!capturedImage ? (
             <>
+              {/* Camera is active - show Take Photo and Stop Camera */}
               <button
                 onClick={handleTakePicture}
-                className="flex-1 px-6 py-3 bg-green-600 text-white hover:bg-green-700 active:bg-green-800 transition-colors font-medium rounded"
+                disabled={!isCameraOn}
+                className="flex-1 px-6 py-3 bg-green-600 text-white hover:bg-green-700 active:bg-green-800 transition-colors font-medium rounded disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Take photo
+                Take Photo
               </button>
               <button
                 onClick={stopCamera}
-                className="flex-1 px-6 py-3 bg-gray-600 text-white hover:bg-gray-700 active:bg-gray-800 transition-colors font-medium rounded"
+                disabled={!isCameraOn}
+                className="flex-1 px-6 py-3 bg-gray-600 text-white hover:bg-gray-700 active:bg-gray-800 transition-colors font-medium rounded disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Stop Camera
               </button>
             </>
           ) : (
-            <button
-              onClick={startCamera}
-              className="w-full px-6 py-3 bg-green-600 text-white hover:bg-green-700 active:bg-green-800 transition-colors font-medium rounded"
-            >
-              Start Camera
-            </button>
-          )}
-
-          {capturedImage && !verificationResult && (
-            <button
-              onClick={handleVerifyAge}
-              disabled={isVerifying}
-              className="flex-1 px-6 py-3 bg-green-600 text-white hover:bg-green-700 active:bg-green-800 transition-colors font-medium rounded disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isVerifying ? 'Uploading...' : 'Upload'}
-            </button>
+            <>
+              {/* Image captured - show Retake Photo and Upload */}
+              <button
+                onClick={handleRetakePhoto}
+                disabled={isVerifying}
+                className="flex-1 px-6 py-3 bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition-colors font-medium rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Retake Photo
+              </button>
+              <button
+                onClick={handleUpload}
+                disabled={isVerifying || !!verificationResult}
+                className="flex-1 px-6 py-3 bg-green-600 text-white hover:bg-green-700 active:bg-green-800 transition-colors font-medium rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isVerifying ? 'Uploading...' : 'Upload'}
+              </button>
+            </>
           )}
         </div>
 
