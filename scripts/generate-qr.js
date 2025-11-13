@@ -46,89 +46,40 @@ async function generateQRCode() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Age Verification QR Code</title>
+  <title>QR Code</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
     body {
-      font-family: system-ui, -apple-system, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      margin: 0;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 20px;
-    }
-    .container {
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      text-align: center;
-      max-width: 500px;
-    }
-    h1 {
-      margin: 0 0 10px 0;
-      color: #333;
-      font-size: 28px;
-    }
-    .subtitle {
-      color: #666;
-      margin-bottom: 30px;
-      font-size: 16px;
+      background: #fff;
+      gap: 20px;
     }
     img {
-      max-width: 100%;
-      height: auto;
-      border: 2px solid #eee;
-      border-radius: 10px;
-      padding: 20px;
-      background: white;
+      max-width: 300px;
+      width: 100%;
+      display: block;
     }
-    .url {
-      margin-top: 20px;
-      padding: 15px;
-      background: #f5f5f5;
-      border-radius: 8px;
-      word-break: break-all;
+    a {
+      color: #0066cc;
+      font-size: 12px;
       font-family: monospace;
-      font-size: 14px;
-      color: #555;
+      text-decoration: none;
     }
-    .instructions {
-      margin-top: 20px;
-      padding: 15px;
-      background: #e3f2fd;
-      border-left: 4px solid #2196f3;
-      border-radius: 4px;
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    @media print {
-      body {
-        background: white;
-      }
-      .container {
-        box-shadow: none;
-      }
+    a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🔍 Age Verification System</h1>
-    <p class="subtitle">Scan to verify your age</p>
-    <img src="qr-code.svg" alt="QR Code" />
-    <div class="url">${APP_URL}</div>
-    <div class="instructions">
-      <strong>📱 Instructions:</strong><br>
-      1. Open your phone's camera<br>
-      2. Point it at this QR code<br>
-      3. Tap the notification to open<br>
-      4. Follow the age verification process
-    </div>
-  </div>
+  <img src="qr-code.svg" alt="QR Code" />
+  <a href="${APP_URL}" target="_blank">${APP_URL}</a>
 </body>
 </html>`;
 
@@ -136,13 +87,7 @@ async function generateQRCode() {
     fs.writeFileSync(htmlFile, htmlContent);
     console.log(`✅ HTML page generated: ${htmlFile}`);
 
-    console.log("\n🎉 All QR codes generated successfully!");
-    console.log("\nGenerated files:");
-    console.log(`  - PNG: public/qr-code.png`);
-    console.log(`  - SVG: public/qr-code.svg`);
-    console.log(`  - HTML: public/qr-code.html`);
-    console.log("\nTo view the HTML page:");
-    console.log(`  Open: ${APP_URL}/qr-code.html`);
+    console.log("\n🎉 QR codes generated!");
   } catch (error) {
     console.error("❌ Error generating QR code:", error);
     process.exit(1);

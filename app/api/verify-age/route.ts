@@ -40,9 +40,6 @@ export async function POST(request: NextRequest) {
         // Simulate age verification 
         const isAdult = simulateAgeVerification();
 
-        // Log for server-side tracking
-        console.log(`Age verification: ${filename} - Result: ${isAdult ? '+18' : '-18'}`);
-
         return NextResponse.json({
             success: true,
             isAdult,
