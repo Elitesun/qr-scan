@@ -1,47 +1,4 @@
-const QRCode = require("qrcode");
-const fs = require("fs");
-const path = require("path");
-
-// Configuration
-const APP_URL = process.env.APP_URL || "https://qr-scan-lake.vercel.app/";
-const OUTPUT_DIR = path.join(__dirname, "..", "public");
-const OUTPUT_FILE = path.join(OUTPUT_DIR, "qr-code.png");
-const OUTPUT_SVG = path.join(OUTPUT_DIR, "qr-code.svg");
-
-async function generateQRCode() {
-  try {
-    console.log(`Generating QR code for URL: ${APP_URL}`);
-
-    // Ensure output directory exists
-    if (!fs.existsSync(OUTPUT_DIR)) {
-      fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    }
-
-    // Generate PNG QR Code
-    await QRCode.toFile(OUTPUT_FILE, APP_URL, {
-      width: 400,
-      margin: 2,
-      color: {
-        dark: "#000000",
-        light: "#FFFFFF",
-      },
-    });
-    console.log(`✅ PNG QR code generated: ${OUTPUT_FILE}`);
-
-    // Generate SVG QR Code
-    await QRCode.toFile(OUTPUT_SVG, APP_URL, {
-      type: "svg",
-      width: 400,
-      margin: 2,
-      color: {
-        dark: "#000000",
-        light: "#FFFFFF",
-      },
-    });
-    console.log(`✅ SVG QR code generated: ${OUTPUT_SVG}`);
-
-    // Generate HTML file with QR code
-    const htmlContent = `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -120,7 +77,7 @@ async function generateQRCode() {
     <h1>🔍 Age Verification System</h1>
     <p class="subtitle">Scan to verify your age</p>
     <img src="qr-code.svg" alt="QR Code" />
-    <div class="url">${APP_URL}</div>
+    <div class="url">https://qr-scan-lake.vercel.app/</div>
     <div class="instructions">
       <strong>📱 Instructions:</strong><br>
       1. Open your phone's camera<br>
@@ -130,23 +87,4 @@ async function generateQRCode() {
     </div>
   </div>
 </body>
-</html>`;
-
-    const htmlFile = path.join(OUTPUT_DIR, "qr-code.html");
-    fs.writeFileSync(htmlFile, htmlContent);
-    console.log(`✅ HTML page generated: ${htmlFile}`);
-
-    console.log("\n🎉 All QR codes generated successfully!");
-    console.log("\nGenerated files:");
-    console.log(`  - PNG: public/qr-code.png`);
-    console.log(`  - SVG: public/qr-code.svg`);
-    console.log(`  - HTML: public/qr-code.html`);
-    console.log("\nTo view the HTML page:");
-    console.log(`  Open: ${APP_URL}/qr-code.html`);
-  } catch (error) {
-    console.error("❌ Error generating QR code:", error);
-    process.exit(1);
-  }
-}
-
-generateQRCode();
+</html>

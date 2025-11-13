@@ -7,10 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome check",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "generate-qr": "node scripts/generate-qr.js"
   },
   "dependencies": {
     "next": "16.0.3",
+    "qrcode": "^1.5.4",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },

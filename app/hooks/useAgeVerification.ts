@@ -1,10 +1,7 @@
 import { useState } from 'react';
+import { verifyAgeAction, type AgeVerificationResult } from '../actions/verifyAge';
 
-export type AgeVerificationResult = {
-    isAdult: boolean; // true if +18, false if -18
-    filename: string;
-    message?: string;
-};
+export type { AgeVerificationResult };
 
 export function useAgeVerification() {
     const [isVerifying, setIsVerifying] = useState(false);
@@ -19,25 +16,14 @@ export function useAgeVerification() {
         setVerificationResult(null);
 
         try {
-            const response = await fetch('/api/verify-age', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ image: imageData })
-            });
+            // Call server action instead of API endpoint
+            const data = await verifyAgeAction(imageData);
 
-            const data = await response.json();
-
-            if (response.ok) {
-                setVerificationResult(data);
-                setIsVerifying(false);
-                return data;
-            } else {
-                setError(data.error || 'Verification failed');
-                setIsVerifying(false);
-                return null;
-            }
+            setVerificationResult(data);
+            setIsVerifying(false);
+            return data;
         } catch (err) {
-            setError('Error during verification');
+            setError(err instanceof Error ? err.message : 'Error during verification');
             setIsVerifying(false);
             return null;
         }

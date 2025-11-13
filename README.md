@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QR Code Age Verification App
 
-## Getting Started
+A Next.js application for age verification through photo capture and analysis. This app provides a mobile-first camera interface for capturing photos and verifying age through a simulated API.
 
-First, run the development server:
+## Features
+
+- 📸 **Native Camera Experience**: Full-screen camera interface on mobile devices with a circular red shutter button
+- 🔄 **Simple Workflow**: Take photo → Review → Upload or Retake
+- ✅ **Age Verification**: Simulated age verification with toast notifications
+- 📱 **Mobile-First Design**: Optimized for mobile with desktop support
+
+### QR Code Generation
+
+Generate a QR code for the app:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm generate-qr
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How It Works
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Camera Access**: App requests camera permission and displays full-screen viewfinder
+2. **Take Photo**: Tap the red circular button to capture a photo
+3. **Review**: The captured image replaces the camera view
+4. **Upload**: Submit the photo for age verification
+5. **Verification**: Receive a toast notification (top-right) indicating verification result
+6. **Retake**: Optionally retake the photo if needed
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+qr-scan/
+├── app/
+│   ├── api/
+│   │   ├── save-image/     # Image storage endpoint
+│   │   └── verify-age/     # Age verification endpoint
+│   ├── hooks/
+│   │   ├── useCamera.ts          # Camera management hook
+│   │   ├── useAgeVerification.ts # Age verification logic
+│   │   └── useImageSave.ts       # Image saving utility
+│   ├── globals.css         # Global styles and animations
+│   ├── layout.tsx          # Root layout
+│   └── page.tsx            # Main camera interface
+├── public/
+│   └── qr-code.html        # QR code for sharing
+└── scripts/
+    └── generate-qr.js      # QR code generator
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Next.js 15**: React framework with App Router
+- **TypeScript**: Type-safe development
+- **Tailwind CSS**: Utility-first styling
+- **Biome**: Fast linter and formatter
+- **MediaDevices API**: Camera access
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### there is a python version of this project but nextjs own was easy for quick testing on vercel
 
-## Deploy on Vercel
+## Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm start` - Start production server
+- `pnpm lint` - Run Biome linter
+- `pnpm generate-qr` - Generate QR code
