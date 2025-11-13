@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
+import os from 'os';
 
 // Simulated  age verification function
 // In production, this would call a real service
@@ -26,10 +27,15 @@ export async function POST(request: NextRequest) {
 
         // Generate filename with timestamp
         const filename = `verification-${Date.now()}.png`;
-        const filepath = join(process.cwd(), 'public', 'uploads', filename);
 
-        // Save the file server-side
-        await writeFile(filepath, buffer);
+        // Save to the OS temp directory (works on Vercel & serverless environments)
+        const filepath = join(os.tmpdir(), filename);
+        try {
+            await writeFile(filepath, buffer);
+        } catch (e) {
+            // If writing fails, don't block verification — log and continue
+            console.warn('Could not write image to disk, continuing without saving:', e);
+        }
 
         // Simulate age verification 
         const isAdult = simulateAgeVerification();

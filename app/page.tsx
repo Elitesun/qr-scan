@@ -48,8 +48,8 @@ export default function Home() {
       {/* Toast Notification */}
       {showToast && verificationResult && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg flex items-center gap-3 animate-slide-in ${verificationResult.isAdult
-            ? 'bg-green-100 border-2 border-green-600'
-            : 'bg-red-100 border-2 border-red-600'
+          ? 'bg-green-100 border-2 border-green-600'
+          : 'bg-red-100 border-2 border-red-600'
           }`}>
           {verificationResult.isAdult ? (
             <>
@@ -111,7 +111,7 @@ export default function Home() {
 
         {/* Two-button interface */}
         <div
-          className="absolute bottom-0 left-0 right-0 sm:relative flex flex-col sm:flex-row gap-3 w-full sm:max-w-2xl sm:mt-6 px-4 py-6 sm:px-0 sm:py-0 button-container-mobile"
+          className="absolute bottom-0 left-0 right-0 sm:relative flex flex-col sm:flex-row gap-3 w-full sm:max-w-2xl sm:mt-6 px-4 py-6 sm:px-0 sm:py-0 bg-gradient-to-t from-black/80 to-transparent sm:bg-transparent"
         >
           {!capturedImage ? (
             <>
