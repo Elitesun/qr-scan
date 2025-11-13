@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 // Configuration
-const APP_URL = process.env.APP_URL || "http://localhost:3000";
+const APP_URL = process.env.APP_URL || "https://qr-scan-lake.vercel.app/";
 const OUTPUT_DIR = path.join(__dirname, "..", "public");
 const OUTPUT_FILE = path.join(OUTPUT_DIR, "qr-code.png");
 const OUTPUT_SVG = path.join(OUTPUT_DIR, "qr-code.svg");
